@@ -9,41 +9,75 @@
     <!-- Plyr CSS -->
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <style>
-      /* body {
-        background-color: #121212;
-      } */
+
+
+      /* Custom Styles for the page */
+      :root {
+        --plyr-color-main: #ff0000;
+        --plyr-badge-background: #ff0000;
+        --plyr-badge-color: #ffffff;
+        --plyr-badge-font-size: 1rem;
+        --plyr-badge-padding: 0.4rem 0.8rem;
+        --plyr-badge-top: 10px;
+        --plyr-badge-right: 10px;
+        --plyr-badge-z-index: 1000;
+        --plyr-badge-background-color: #ff0000;
+      }
+
       .video-container {
-        max-width: 90%;
-        margin: 0 auto;
+        border-radius: 12px !important;
+        overflow: hidden;
       }
-      .custom-plyr {
-        --plyr-color-main: #007bff;
-      }
+
       .quality-badge {
         position: absolute;
         top: 10px;
         right: 10px;
         z-index: 1000;
+        background-color: #ff0000;
+        color: white;
+        padding: 0.4rem 0.8rem;
+        font-size: 1rem;
+        border-radius: 5px;
+      }
+
+      .text-muted-danger {
+        color: rgba(220, 53, 69, 0.6);
+      }
+
+      /* Custom shadow effect similar to image design */
+      .video-container {
+        box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.4) !important;
       }
     </style>
   </head>
-  <body class="bg-dark py-5 align-items-center justify-content-center min-vh-100">
-    <!-- <div class="container rounded shadow p-3" style="box-shadow: 0 0 10px rgba(255, 255, 255, 0.1) !important;"> -->
-      <!-- <h1 class="text-center m-4 text-light">Video Player</h1> -->
-      <div class="video-container position-relative rounded h-75 w-75" style="box-shadow: 0px 0px 25px rgba(255, 255, 255, 0.4) !important;">
-        <span id="quality-badge" class="badge bg-primary quality-badge"></span>
-        <video id="player" playsinline controls class="rounded shadow custom-plyr">
-          {% for quality, url in video_urls.items() %}
-          <source
-            src="{{ url }}"
-            type="video/mp4"
-            size="{{ quality[:-1] }}"
-            label="{{ quality }}"
-          />
-          {% endfor %}
-        </video>
+  <body class="bg-dark text-light p-5 d-flex align-items-center justify-content-center min-vh-100">
+    
+    <!-- Bootstrap Container for Layout -->
+    <div class="container w-50 mb-5">
+      <h1 class="fw-bold display-4 text-danger text-start">BEN</h1>
+      <p class="w-75 text-muted-danger text-start">Welcome, my dear, to Ben watching site. Here you can watch many movies and series with different qualities and without ads or interruptions.</p>
+      
+      <!-- Button Group aligned left -->
+      <div class="d-flex justify-content-start">
+        <a href="https://t.me/BENfiles" target="_blank" class="btn btn-danger me-2">Channel On Telegram</a>
       </div>
-    <!-- </div> -->
+    </div>
+
+    <!-- Video Container -->
+    <div class="container video-container position-relative rounded p-0">
+      <span id="quality-badge" class="quality-badge"></span>
+      <video id="player" playsinline controls class="w-100 shadow">
+        {% for quality, url in video_urls.items() %}
+        <source
+          src="{{ url }}"
+          type="video/mp4"
+          size="{{ quality[:-1] }}"
+          label="{{ quality }}"
+        />
+        {% endfor %}
+      </video>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -52,8 +86,8 @@
     <script>
       const player = new Plyr("#player", {
         quality: {
-          default: {{ default_quality }},
-          options: [{% for quality in video_urls.keys() %}{{ quality[:-1] }}{% if not loop.last %}, {% endif %}{% endfor %}],
+          default: '{{ default_quality }}',
+          options: [{% for quality in video_urls.keys() %}'{{ quality[:-1] }}'{% if not loop.last %}, {% endif %}{% endfor %}],
           forced: true,
           onChange: (e) => {
             console.log(`Quality changed to: ${e}`);
