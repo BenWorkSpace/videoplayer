@@ -17,6 +17,7 @@ templates = Jinja2Templates(directory="templates")
 async def root():
     return {"message": "Welcome to the Video Player API"}
 
+default_quality = 1080
 qualities = [
     "1080p",
     "720p",
@@ -32,7 +33,6 @@ async def watch_video(request: Request, urls: str):
     video_urls = { 
         qualities[i]: urls[i] for i in range(len(urls))
     }
-    default_quality = 720
 
     return templates.TemplateResponse("watch.html", {
         "request": request,
